@@ -7,15 +7,41 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
+struct User: Identifiable {
+    let id = UUID()
+    let name: String
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+struct UsersListContentView: View {
+    @State var usersList: [User] = []
+    var body: some View {
+        ZStack {
+            VStack {
+                ForEach(usersList, id: \.id) { item in
+                    Text(item.name)
+                }
+                Spacer()
+            }
+            .frame(maxWidth: .infinity,
+                   maxHeight: .infinity,
+                   alignment: .leading)
+            .padding()
+            
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button {
+                        usersList.append(User(name: "iOS"))
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(25)
+                    }
+                    .padding()
+                }
+            }
+        }
     }
 }
