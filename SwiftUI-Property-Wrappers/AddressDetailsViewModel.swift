@@ -1,23 +1,28 @@
 //
-//  ContentView.swift
+//  AddressDetailsViewModel.swift
 //  SwiftUI-Property-Wrappers
 //
-//  Created by Sparkout on 13/09/22.
+//  Created by Sparkout on 14/09/22.
 //
 
 import SwiftUI
 
-struct User: Identifiable {
-    let id = UUID()
-    let name: String
+class AddressDetailsViewModel: ObservableObject {
+    @Published var usersList: [User] = []
+    
+    func fetchUser() {
+        usersList.append(User(name: "User \(usersList.count + 1)"))
+    }
 }
 
-struct UsersListContentView: View {
-    @State var usersList: [User] = []
+struct AddressDetailsContentView: View {
+    
+    @ObservedObject var addressDetails: AddressDetailsViewModel = .init()
+    
     var body: some View {
         ZStack {
             VStack {
-                ForEach(usersList, id: \.id) { item in
+                ForEach(addressDetails.usersList, id: \.id) { item in
                     Text(item.name)
                 }
                 Spacer()
@@ -32,7 +37,7 @@ struct UsersListContentView: View {
                 HStack {
                     Spacer()
                     Button {
-                        usersList.append(User(name: "iOS"))
+                        addressDetails.fetchUser()
                     } label: {
                         Image(systemName: "plus.circle")
                             .resizable()
@@ -45,4 +50,3 @@ struct UsersListContentView: View {
         }
     }
 }
-
